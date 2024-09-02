@@ -11,4 +11,3 @@ streamlit-webrtc
 python-dotenv
 pygame
 asyncio
-playsound
