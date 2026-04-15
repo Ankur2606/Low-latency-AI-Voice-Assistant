@@ -9,9 +9,8 @@ def generate_llm_response(user_input, history_context):
         and friendly. 
         Respond briefly with at most 40 words. 
         No emotes, just plain text.""",
-        model="mistralai/Mistral-7B-Instruct-v0.3",
+        model="llama-3.1-8b-instant",
         temperature=0.7,
-        chat_template="mistral",
         verbose=False
     )
     return response

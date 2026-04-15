@@ -53,7 +53,7 @@ async def capture_audio_vad(duration=5, filename="audio.flac"):
 # Asynchronously send the audio file in chunks
 async def send_audio_in_chunks(filename):
     HF_API_TOKEN =  os.getenv("HF_API_KEY")
-    HF_API_URL = "https://api-inference.huggingface.co/models/openai/whisper-small"
+    HF_API_URL = "https://router.huggingface.co/models/openai/whisper-small"
     headers = {"Authorization": f"Bearer {HF_API_TOKEN}"}
 
     if filename:

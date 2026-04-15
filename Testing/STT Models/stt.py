@@ -37,7 +37,7 @@ def vad_filter(audio, threshold=VAD_THRESHOLD):
 async def send_audio_in_chunks(filename):
     HF_API_TOKEN = os.getenv("HF_API_KEY")
     # HF_API_URL = "https://api-inference.huggingface.co/models/openai/whisper-small"
-    HF_API_URL = "https://api-inference.huggingface.co/models/openai/whisper-tiny"
+    HF_API_URL = "https://router.huggingface.co/models/openai/whisper-tiny"
     headers = {"Authorization": f"Bearer {HF_API_TOKEN}"}
 
     async with aiohttp.ClientSession() as session:

@@ -6,6 +6,23 @@ import asyncio
 # from pydub import AudioSegment
 # from pydub.playback import play
 
+
+# ============================================================
+# Kokoro TTS (local streaming, used with -k flag)
+# ============================================================
+
+def stream_kokoro_tts(text, voice='af_heart', speed=1.0):
+    """Stream text-to-speech using Kokoro-82M.
+    Plays each sentence chunk immediately via sounddevice — no file I/O.
+    This gives real-time feel with ~200ms first-chunk latency on GPU."""
+    from Models.kokoro_tts import stream_speak
+    stream_speak(text, voice=voice, speed=speed)
+
+
+# ============================================================
+# Edge-TTS (cloud, default)
+# ============================================================
+
 # Function to convert text to speech using Edge-TTS
 async def convert_text_to_speech(text, voice="en-US-JennyNeural"
                                  , rate="+0%", pitch="+0Hz"):

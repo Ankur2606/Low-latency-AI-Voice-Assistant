@@ -1,11 +1,20 @@
 import asyncio
+import argparse
 from utils.audio_processing import capture_and_transcribe_audio
 from utils.llm_interaction import generate_llm_response
-from utils.tts_conversion import convert_text_to_speech, play_audio
+from utils.tts_conversion import (
+    convert_text_to_speech, play_audio,
+    stream_kokoro_tts
+)
 import os
 
-async def main_interaction_loop():
+async def main_interaction_loop(use_kokoro=False):
     """Main loop for capturing speech, generating responses, and playing audio."""
+    if use_kokoro:
+        print("🎤 TTS Engine: Kokoro-82M (local)")
+    else:
+        print("🎤 TTS Engine: Edge-TTS (cloud)")
+
     conversation_history = []  # Store history of user inputs and assistant responses
 
     while True:
@@ -35,12 +44,24 @@ async def main_interaction_loop():
         conversation_history.append({"Assistant": response})
 
         # Step 3: Convert the response text to speech and play it
-        audio_file = await convert_text_to_speech(response, rate="+0%", pitch="+0Hz")
-        play_audio(audio_file)
+        if use_kokoro:
+            # Kokoro streams audio directly to speakers — no file I/O
+            stream_kokoro_tts(response)
+        else:
+            audio_file = await convert_text_to_speech(response, rate="+0%", pitch="+0Hz")
+            play_audio(audio_file)
 
         # Optional: Delete the audio file after playing (uncomment if needed)
         # os.remove(audio_file)
         print("Audio playback finished.\n")
 
 if __name__ == "__main__":
-    asyncio.run(main_interaction_loop())
+    parser = argparse.ArgumentParser(description="Low-Latency AI Voice Assistant")
+    parser.add_argument(
+        "-k", "--kokoro",
+        action="store_true",
+        help="Use Kokoro-82M local TTS instead of Edge-TTS (cloud)"
+    )
+    args = parser.parse_args()
+
+    asyncio.run(main_interaction_loop(use_kokoro=args.kokoro))
